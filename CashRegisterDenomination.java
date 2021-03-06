@@ -15,6 +15,10 @@ public class CashRegisterDenomination {
         this.numberOfCoins++;
     }
 
+    public void addNumberOfCoins(int n) {
+        this.numberOfCoins += n;
+    }
+
     public void resetNumberOfCoins() {
         this.numberOfCoins = 0;
     }

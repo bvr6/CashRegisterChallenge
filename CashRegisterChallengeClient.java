@@ -1,8 +1,10 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
+import java.util.Random;
 
 public class CashRegisterChallengeClient {
+// TODO Increase documentation quality, remove redundant elements
 
 // Currency values
 private final static CashRegisterDenomination DOLLAR = new CashRegisterDenomination("dollar", "dollars", 100);
@@ -34,7 +36,7 @@ private final static int CURRENCY_ARRAY_LENGTH = 5;
                     double moneyReceivedRaw = Double.parseDouble(parsedLine[1]);
                     int moneyReceived = convertToInt(moneyReceivedRaw);
                     if (isDivByThree(moneyOwed)) {
-
+                        result += calculateChangeRandom(moneyOwed, moneyReceived);
                     }
                     else {
                         result += calculateChange(moneyOwed, moneyReceived);
@@ -77,6 +79,23 @@ private final static int CURRENCY_ARRAY_LENGTH = 5;
         return result;
     }
 
+    public static String calculateChangeRandom(int moneyOwed, int moneyReceived) {
+        int change = moneyReceived - moneyOwed;
+        if (change < 0) {
+            return "Not enough money received.\n";
+        }
+        if (change == 0) {
+            return "No change required.\n";
+        }
+        CashRegisterDenomination[] coinResult = {DOLLAR, QUARTER, DIME, NICKEL, PENNY};
+        coinResult = randomCoins(coinResult, change);
+        String result = resultToString(coinResult);
+        for (CashRegisterDenomination coin : coinResult) {
+            coin.resetNumberOfCoins();
+        }
+        return result;
+    }
+
     /**
      * 
      * @param coins - the number of coins counted to return as change
@@ -85,9 +104,28 @@ private final static int CURRENCY_ARRAY_LENGTH = 5;
      */
     public static CashRegisterDenomination[] minCoins(CashRegisterDenomination[] coins, int change) {
         for (int i = 0; i < CURRENCY_ARRAY_LENGTH; i++) {
-            while (coins[i].getValue() <= change) {
-                coins[i].incrementNumberOfCoins();
-                change -= coins[i].getValue();
+            int maxCoins = change / coins[i].getValue();
+            if (maxCoins > 0) {
+                coins[i].addNumberOfCoins(maxCoins);
+                change -= coins[i].getValue() * maxCoins;
+            }
+        }
+        return coins;
+    }
+
+    public static CashRegisterDenomination[] randomCoins(CashRegisterDenomination[] coins, int change) {
+        Random random = new Random();
+        for (int i = 0; i < CURRENCY_ARRAY_LENGTH; i++) {
+            if (i == CURRENCY_ARRAY_LENGTH - 1) {
+                coins[i].addNumberOfCoins(change);
+            }
+            else {
+                int maxCoins = change / coins[i].getValue();
+                if (maxCoins > 0) {
+                    int randomCoins = random.nextInt(maxCoins + 1);
+                    coins[i].addNumberOfCoins(randomCoins);
+                    change -= coins[i].getValue() * randomCoins;
+                }
             }
         }
         return coins;
@@ -114,6 +152,11 @@ private final static int CURRENCY_ARRAY_LENGTH = 5;
         return (int) (num * 100);
     }
 
+    /**
+     * 
+     * @param resultArray
+     * @return
+     */
     public static String resultToString(CashRegisterDenomination[] resultArray) {
         String result = "";
         boolean first = true; // use this to check when the first denomination is used (mainly for comma usage)
