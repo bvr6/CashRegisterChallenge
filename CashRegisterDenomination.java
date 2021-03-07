@@ -10,7 +10,7 @@ public class CashRegisterDenomination {
         this.value = value;
         this.numberOfCoins = 0;
     }
-
+    
     public void incrementNumberOfCoins() {
         this.numberOfCoins++;
     }

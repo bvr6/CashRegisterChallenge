@@ -14,6 +14,7 @@ private final static CashRegisterDenomination NICKEL = new CashRegisterDenominat
 private final static CashRegisterDenomination PENNY = new CashRegisterDenomination("penny", "pennies", 1);
 
 // Array containing all denominations
+private final static CashRegisterDenomination[] coinArray = {DOLLAR, QUARTER, DIME, NICKEL, PENNY};
 private final static int CURRENCY_ARRAY_LENGTH = 5;
 
     /**
@@ -70,7 +71,7 @@ private final static int CURRENCY_ARRAY_LENGTH = 5;
         if (change == 0) {
             return "No change required.\n";
         }
-        CashRegisterDenomination[] coinResult = {DOLLAR, QUARTER, DIME, NICKEL, PENNY};
+        CashRegisterDenomination[] coinResult = coinArray; // Array set up in descending value order
         coinResult = minCoins(coinResult, change);
         String result = resultToString(coinResult);
         for (CashRegisterDenomination coin : coinResult) {
@@ -79,6 +80,12 @@ private final static int CURRENCY_ARRAY_LENGTH = 5;
         return result;
     }
 
+    /**
+     * 
+     * @param moneyOwed
+     * @param moneyReceived
+     * @return
+     */
     public static String calculateChangeRandom(int moneyOwed, int moneyReceived) {
         int change = moneyReceived - moneyOwed;
         if (change < 0) {
@@ -87,7 +94,7 @@ private final static int CURRENCY_ARRAY_LENGTH = 5;
         if (change == 0) {
             return "No change required.\n";
         }
-        CashRegisterDenomination[] coinResult = {DOLLAR, QUARTER, DIME, NICKEL, PENNY};
+        CashRegisterDenomination[] coinResult = coinArray; // Array set up in descending value order
         coinResult = randomCoins(coinResult, change);
         String result = resultToString(coinResult);
         for (CashRegisterDenomination coin : coinResult) {
@@ -113,6 +120,12 @@ private final static int CURRENCY_ARRAY_LENGTH = 5;
         return coins;
     }
 
+    /**
+     * 
+     * @param coins
+     * @param change
+     * @return
+     */
     public static CashRegisterDenomination[] randomCoins(CashRegisterDenomination[] coins, int change) {
         Random random = new Random();
         for (int i = 0; i < CURRENCY_ARRAY_LENGTH; i++) {
