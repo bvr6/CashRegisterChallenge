@@ -1,7 +1,7 @@
 # CashRegisterChallenge
 This is the CashRegisterChallenge submission for Pineapple Payments. To run, you must compile all Java classes and run:
 ```
-java CashRegisterRunner input.txt
+java CashRegisterDriver input.txt
 ```
 If you wish to test this on another input file, replace input.txt with the alternate file name.
 ## CashRegisterChallenge.java
